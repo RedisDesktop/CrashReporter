@@ -4,7 +4,6 @@
  */
 
 #include "CrashReporter.h"
-#include "version.h"
 #include <QIcon>
 #include <QDebug>
 #include <QTimer>
@@ -17,8 +16,6 @@ CrashReporter::CrashReporter( const QUrl& url, const QStringList& args )
     , m_url( url )
 {
     ui.setupUi( this );    
-    ui.progressBar->setRange( 0, 100 );
-    ui.progressBar->setValue( 0 );    
 
     ui.vboxLayout->setSpacing( 16 );
     ui.hboxLayout1->setSpacing( 16 );
@@ -60,7 +57,7 @@ CrashReporter::send()
 
     pairs << Pair( "product", "RDM" )
           << Pair( "platform",  getPlatformInformation().toUtf8() )
-          << Pair( "version",  RDM_VERSION );
+          << Pair( "version",  QByteArray(RDM_VERSION) );
 
     foreach ( Pair const pair, pairs )
     {
