@@ -1,4 +1,4 @@
-## Crash Reporter
+## Crash Reporter [![In Progress](https://badge.waffle.io/redisdesktop/crashreporter.png?label=in+progress&title=in progress)](https://waffle.io/redisdesktop/crashreporter)
 
 ![](http://glide.name/wp-content/uploads/2014/06/crashReporter.jpg)
 
