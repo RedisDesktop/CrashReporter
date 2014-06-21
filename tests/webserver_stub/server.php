@@ -6,16 +6,16 @@ ini_set("display_startup_errors", 1);
 class Server {
 
     /**
-* Default config
-* @var array
-*/
+     * Default config
+     * @var array
+     */
     private $config = array(
-        'removeFilesOnNewRequest' => true,
+        'removeFilesOnNewRequest' => false,
     );
 
     /**
-* @var string
-*/
+     * @var string
+     */
     private $requestsDir;
 
     private $router;
@@ -29,8 +29,8 @@ class Server {
     }
 
     /**
-* @return bool
-*/
+     * @return bool
+     */
     public function canProcessRequest()
     {
         if (preg_match("/.*\.exe$/i", $_SERVER['REQUEST_URI'])) {
@@ -41,8 +41,8 @@ class Server {
     }
 
     /**
-*
-*/
+     *
+     */
     public function processRequest()
     {
         if ($this->config['removeFilesOnNewRequest']) {
@@ -60,8 +60,8 @@ class Server {
 
 
     /**
-* Remove all files from request dir
-*/
+     * Remove all files from request dir
+     */
     private function cleanRequestsDir()
     {
         foreach (new DirectoryIterator($this->requestsDir) as $fileInfo) {
@@ -72,8 +72,8 @@ class Server {
     }
 
     /**
-* Save current request info
-*/
+     * Save current request info
+     */
     public function dumpRequestInfo()
     {
         $dump = function ($dumpVar) {
@@ -105,17 +105,17 @@ $REQUEST_DIR = realpath(__DIR__ . '/requests');
 $router = array(
     "/\/crash-report*/i"  => function () use ($REQUEST_DIR) {
 
-	if (empty($_FILES['upload_file_minidump']))
-		return '';
+        if (empty($_FILES['upload_file_minidump']))
+            return '';
 
-	
-	$dumpName = $REQUEST_DIR . '/' . "last.dmp";
 
-	if (move_uploaded_file($_FILES['upload_file_minidump']['tmp_name'], $dumpName)) {
-		echo '{"ok":"OK! Thanks!"}';
-	}
+        $dumpName = $REQUEST_DIR . '/' . "last.dmp";
 
-    return 'error';
+        if (move_uploaded_file($_FILES['upload_file_minidump']['tmp_name'], $dumpName)) {
+            echo '{"ok":"OK! Thanks!"}';
+        }
+
+        return 'error';
 
     }
 );

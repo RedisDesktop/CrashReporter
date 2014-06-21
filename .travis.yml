@@ -21,6 +21,7 @@ script:
   - cd ./tests/webserver_stub/
   - chmod +x ./run.sh 
   - ./run.sh &
+  - sleep(5)
   - curl http://127.0.0.1:8080/
   - cd ./../tests/
   - qmake
