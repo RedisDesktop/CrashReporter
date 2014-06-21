@@ -23,9 +23,8 @@ script:
   - qmake DESTDIR=./bin/
   - make
   - cd ./tests/webserver_stub/
-  - php -v
   - chmod +x ./run.sh 
-  - nohup ./run.sh &
+  - nohup sh `pwd`/run.sh &
   - cd ./../tests/
   - qmake
   - make -s
