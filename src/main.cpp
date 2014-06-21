@@ -32,7 +32,7 @@ int main( int argc, char* argv[] )
 
     Config crashReporterConfig = {
         "RedisDesktopManager",
-        "http://127.0.0.1:8080/crash-report", //"http://redisdesktop.com/crash-report",
+        "http://redisdesktop.com/crash-report",
         QByteArray(RDM_VERSION),
         QString(argv[1])
     };
