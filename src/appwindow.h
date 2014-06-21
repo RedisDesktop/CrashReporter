@@ -17,6 +17,9 @@ public slots:
 
 private:
     Ui::CrashReporter ui;
+
+private slots:
+    void onAppRestart();
 };
 
 #endif // APPWINDOW_H

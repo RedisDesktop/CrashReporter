@@ -1,6 +1,8 @@
 #include "appwindow.h"
 #include <QMessageBox>
 #include <QDebug>
+#include <QApplication>
+#include <QProcess>
 
 AppWindow::AppWindow() :
     QDialog(nullptr)
@@ -8,6 +10,15 @@ AppWindow::AppWindow() :
     //init ui
     ui.setupUi( this );
     setFixedSize( size() );
+
+    if (QApplication::instance()->arguments().length() == 3) {
+
+        ui.restartButton->setEnabled(true);
+
+        QObject::connect(ui.restartButton, SIGNAL(clicked()), this, SLOT(onAppRestart()));
+    } else {
+        ui.restartButton->hide();
+    }
 }
 
 void AppWindow::onProgress( qint64 done, qint64 total )
@@ -22,6 +33,11 @@ void AppWindow::onProgress( qint64 done, qint64 total )
     }
 }
 
+void AppWindow::onAppRestart()
+{
+    QProcess::startDetached(QApplication::instance()->arguments().at(2));
+    QApplication::instance()->quit();
+}
 
 void AppWindow::onError(const QString& title, const QString& message )
 {

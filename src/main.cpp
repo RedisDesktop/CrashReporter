@@ -15,7 +15,7 @@ int main( int argc, char* argv[] )
 {
     QApplication app( argc, argv );
 
-    if (argc != 2 || !QFile::exists(QString(argv[1])) )
+    if (argc < 2 || !QFile::exists(QString(argv[1])) )
     {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Crash Reporter");
