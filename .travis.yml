@@ -24,6 +24,7 @@ script:
   - make
   - cd ./tests/webserver_stub/
   - php -v
+  - chmod +x ./run.sh 
   - nohup ./run.sh &
   - cd ./../tests/
   - qmake

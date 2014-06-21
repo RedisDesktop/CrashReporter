@@ -7,7 +7,7 @@
 QT       += widgets network testlib
 
 TARGET = tests
-CONFIG   += console
+CONFIG   += console c++11
 CONFIG   -= app_bundle
 
 TEMPLATE = app
