@@ -1,1 +1,6 @@
 crashreporter.pro.user
+tests/build-*
+tests/bin/*
+tests/webserver_stub/.idea*
+tests/tests/tests.pro.user
+tests/webserver_stub/requests/*

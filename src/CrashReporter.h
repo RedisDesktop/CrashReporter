@@ -1,18 +1,9 @@
-/* 
- * RedisDesktopManager Crash Reporter
- * based on source from http://tomahawk-player.org
- */
-
 #pragma once
 
-#include <QDialog>
 #include <QFile>
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QSharedPointer>
-
-#include "ui_CrashReporter.h"
-
 
 struct Config {
     QString productName;
@@ -21,8 +12,7 @@ struct Config {
     QString minidumpPath;
 };
 
-
-class CrashReporter : public QDialog
+class CrashReporter : public QObject
 {
     Q_OBJECT
 
@@ -31,7 +21,6 @@ public:
     virtual ~CrashReporter( );
 
 private:
-    Ui::CrashReporter ui;
     Config m_config;
     QSharedPointer<QNetworkRequest> m_request;
     QSharedPointer<QNetworkReply> m_reply;
@@ -41,8 +30,11 @@ private:
 public slots:
     void send();
 
+signals:
+    void uploadingProgress( qint64 done, qint64 total );
+    void success(const QString& title, const QString& message);
+    void error(const QString& title, const QString& message);
+
 private slots:
-    void onDone();
-    void onProgress( qint64 done, qint64 total );
-    void onFail( int error, const QString& errorString );
+    void onDone();        
 };

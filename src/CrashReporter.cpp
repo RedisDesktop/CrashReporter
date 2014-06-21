@@ -14,20 +14,16 @@
 #include <QJsonObject>
 
 CrashReporter::CrashReporter(const Config &config)
-    : m_config(config)
+    : m_config(config), m_request(nullptr), m_reply(nullptr)
 
 {
-    //init ui
-    ui.setupUi( this );    
-    setFixedSize( size() );
-
-    // create & send request
     m_request = QSharedPointer<QNetworkRequest>(new QNetworkRequest( QUrl(config.reportUrl) ));
-    QTimer::singleShot( 1, this, SLOT( send() ) );
 }
 
 CrashReporter::~CrashReporter()
 {
+    if (!m_reply.isNull() && m_reply->isRunning())
+        m_reply->abort();
 }
 
 static QByteArray
@@ -41,6 +37,11 @@ contents( const QString& path )
 
 void CrashReporter::send()
 {
+    if (!QFile::exists(m_config.minidumpPath)) {
+        qDebug() << "Can not find minidump file: " << m_config.minidumpPath;
+        return;
+    }
+
     QByteArray body;
 
     // add parameters
@@ -69,12 +70,12 @@ void CrashReporter::send()
     body += "\r\n";
     body += "--rboundary--\r\n";
 
-    QScopedPointer<QNetworkAccessManager> nam(new QNetworkAccessManager( this ));
+    QNetworkAccessManager* nam = new QNetworkAccessManager( this );
     m_request->setHeader( QNetworkRequest::ContentTypeHeader, "multipart/form-data; boundary=rboundary" );
     m_reply = QSharedPointer<QNetworkReply>(nam->post( *m_request, body ));
 
-    connect( m_reply.data(), &QNetworkReply::finished, this, &CrashReporter::onDone, Qt::QueuedConnection );
-    connect( m_reply.data(), &QNetworkReply::uploadProgress, this, &CrashReporter::onProgress );
+    connect( m_reply.data(), &QNetworkReply::finished, this, &CrashReporter::onDone );
+    connect( m_reply.data(), &QNetworkReply::uploadProgress, this, &CrashReporter::uploadingProgress );
 }
 
 QString 
@@ -99,29 +100,10 @@ CrashReporter::getPlatformInformation()
     return platform;
 }
 
-
-void
-CrashReporter::onProgress( qint64 done, qint64 total )
-{
-    if ( total )
-    {
-        QString const msg = tr( "Uploaded %L1 of %L2 KB." ).arg( done / 1024 ).arg( total / 1024 );
-
-        ui.progressBar->setMaximum( total );
-        ui.progressBar->setValue( done );
-        ui.progressLabel->setText( msg );
-    }
-}
-
-
 void
 CrashReporter::onDone()
-{
-    QByteArray data = m_reply->readAll();
-    ui.progressBar->setValue( ui.progressBar->maximum() );
-    ui.button->setText( tr( "Close" ) );
-
-    QString const response = QString::fromUtf8( data );
+{    
+    QString const response = QString::fromUtf8(m_reply->readAll());
 
     // Parse response
     // more info in README.md
@@ -132,8 +114,7 @@ CrashReporter::onDone()
 
     if ( ( m_reply->error() != QNetworkReply::NoError ) || !valid )
     {
-        QMessageBox::warning(this, "Server Error", response);
-        onFail( m_reply->error(), m_reply->errorString() );
+        emit error("Server error", m_reply->errorString());
         return;
     }
 
@@ -141,20 +122,15 @@ CrashReporter::onDone()
 
     if (jsonResponse.contains("ok")) {
 
-        QMessageBox::warning(this, "Crash Report Sent!", jsonResponse.value("ok").toString());
+        QString msg = jsonResponse.value("ok").toString();
         QFile::remove(m_config.minidumpPath);
+        emit success("Crash Report Sent!", msg);
+        return;
 
     } else if (jsonResponse.contains("error")) {
-
-        QMessageBox::warning(this, "Error occurred", jsonResponse.value("ok").toString());
+        emit error("Error occurred", jsonResponse.value("ok").toString());
     }
 }
 
 
-void
-CrashReporter::onFail( int error, const QString& errorString )
-{
-    ui.button->setText( tr( "Close" ) );
-    ui.progressLabel->setText( tr( "Failed to send crash info." ) );
-    qDebug() << "Error:" << error << errorString;
-}
+
