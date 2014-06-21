@@ -167,7 +167,20 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>Abort</string>
+          <string>Close</string>
+         </property>
+         <property name="default">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pushButton">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Restart</string>
          </property>
          <property name="default">
           <bool>true</bool>

@@ -10,31 +10,24 @@
 #include <QDir>
 #include <QDateTime>
 #include <QMessageBox>
+#include <QJsonDocument>
+#include <QJsonObject>
 
-CrashReporter::CrashReporter( const QUrl& url, const QStringList& args )
-    : m_reply( 0 )
-    , m_url( url )
+CrashReporter::CrashReporter(const Config &config)
+    : m_config(config)
+
 {
+    //init ui
     ui.setupUi( this );    
-
-    ui.vboxLayout->setSpacing( 16 );
-    ui.hboxLayout1->setSpacing( 16 );
-    ui.progressBar->setTextVisible( false );
-    ui.progressLabel->setIndent( 1 );
-
-    m_request = new QNetworkRequest( m_url );
-
-    m_minidump = args.value( 1 ) + ".dmp";
-
     setFixedSize( size() );
 
+    // create & send request
+    m_request = QSharedPointer<QNetworkRequest>(new QNetworkRequest( QUrl(config.reportUrl) ));
     QTimer::singleShot( 1, this, SLOT( send() ) );
 }
 
 CrashReporter::~CrashReporter()
 {
-    delete m_request;
-    delete m_reply;
 }
 
 static QByteArray
@@ -46,8 +39,7 @@ contents( const QString& path )
 }
 
 
-void
-CrashReporter::send()
+void CrashReporter::send()
 {
     QByteArray body;
 
@@ -55,9 +47,9 @@ CrashReporter::send()
     typedef QPair<QByteArray, QByteArray> Pair;
     QList<Pair> pairs;
 
-    pairs << Pair( "product", "RDM" )
-          << Pair( "platform",  getPlatformInformation().toUtf8() )
-          << Pair( "version",  QByteArray(RDM_VERSION) );
+    pairs << Pair( "product", m_config.productName.toUtf8() )
+          << Pair( "platform", getPlatformInformation().toUtf8() )
+          << Pair( "version", m_config.productVersion.toUtf8());
 
     foreach ( Pair const pair, pairs )
     {
@@ -70,19 +62,19 @@ CrashReporter::send()
     // add minidump file
     body += "--rboundary\r\n";
     body += "Content-Disposition: form-data; name=\"upload_file_minidump\"; filename=\""
-          + QFileInfo( m_minidump ).fileName() + "\"\r\n";
+          + QFileInfo( m_config.minidumpPath ).fileName() + "\"\r\n";
     body += "Content-Type: application/octet-stream\r\n";
     body += "\r\n";
-    body += contents( m_minidump );
+    body += contents( m_config.minidumpPath );
     body += "\r\n";
-    body += "--rboundary\r\n";
+    body += "--rboundary--\r\n";
 
-    QNetworkAccessManager* nam = new QNetworkAccessManager( this );
+    QScopedPointer<QNetworkAccessManager> nam(new QNetworkAccessManager( this ));
     m_request->setHeader( QNetworkRequest::ContentTypeHeader, "multipart/form-data; boundary=rboundary" );
-    m_reply = nam->post( *m_request, body );
+    m_reply = QSharedPointer<QNetworkReply>(nam->post( *m_request, body ));
 
-    connect( m_reply, &QNetworkReply::finished, this, &CrashReporter::onDone, Qt::QueuedConnection );
-    connect( m_reply, &QNetworkReply::uploadProgress, this, &CrashReporter::onProgress );
+    connect( m_reply.data(), &QNetworkReply::finished, this, &CrashReporter::onDone, Qt::QueuedConnection );
+    connect( m_reply.data(), &QNetworkReply::uploadProgress, this, &CrashReporter::onProgress );
 }
 
 QString 
@@ -131,20 +123,30 @@ CrashReporter::onDone()
 
     QString const response = QString::fromUtf8( data );
 
-    if ( ( m_reply->error() != QNetworkReply::NoError ) || !response.startsWith( "http" ) )
+    // Parse response
+    // more info in README.md
+    QScopedPointer<QJsonParseError> parsingError(new QJsonParseError);
+    QJsonDocument document = QJsonDocument::fromJson(response.toUtf8(), parsingError.data());
+    bool valid = (parsingError->error == QJsonParseError::NoError
+                  || !document.isObject());
+
+    if ( ( m_reply->error() != QNetworkReply::NoError ) || !valid )
     {
         QMessageBox::warning(this, "Server Error", response);
         onFail( m_reply->error(), m_reply->errorString() );
+        return;
     }
-    else {
-        QMessageBox::warning(
-            this, "Issue Created!", 
-            QString(
-                "Issue created, please add more info about crash in comments "
-                "<br /><a href='%1'>%1</a>").arg(response)
-            );
-        ui.progressLabel->setText( tr( "Sent! <b>Many thanks</b>." ) );
-        QFile::remove(m_minidump);
+
+    QJsonObject jsonResponse = document.object();
+
+    if (jsonResponse.contains("ok")) {
+
+        QMessageBox::warning(this, "Crash Report Sent!", jsonResponse.value("ok").toString());
+        QFile::remove(m_config.minidumpPath);
+
+    } else if (jsonResponse.contains("error")) {
+
+        QMessageBox::warning(this, "Error occurred", jsonResponse.value("ok").toString());
     }
 }
 

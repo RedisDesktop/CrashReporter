@@ -13,13 +13,13 @@ CONFIG -= debug app_bundle
 CONFIG += release c++11
 
 SOURCES += \
-    $$PWD/*.cpp \
+    $$PWD/src/*.cpp \
 
 HEADERS  += \
-    $$PWD/*.h \
+    $$PWD/src/*.h \
 
 FORMS += \
-    $$PWD/*.ui \
+    $$PWD/ui/*.ui \
 
 OBJECTS_DIR = $$DESTDIR/obj
 MOC_DIR = $$DESTDIR/obj
@@ -35,6 +35,5 @@ unix:!macx {
     CONFIG += static
     QMAKE_LFLAGS += -static-libgcc -static-libstdc++
 }
-
 
 DEFINES += RDM_VERSION="\\\"0.0.0\\\""

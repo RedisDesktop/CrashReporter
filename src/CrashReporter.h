@@ -9,24 +9,32 @@
 #include <QFile>
 #include <QNetworkReply>
 #include <QNetworkRequest>
+#include <QSharedPointer>
 
 #include "ui_CrashReporter.h"
+
+
+struct Config {
+    QString productName;
+    QString reportUrl;
+    QString productVersion;
+    QString minidumpPath;
+};
+
 
 class CrashReporter : public QDialog
 {
     Q_OBJECT
 
 public:
-    CrashReporter( const QUrl& url, const QStringList& argv );
+    CrashReporter( const Config& config );
     virtual ~CrashReporter( );
 
 private:
     Ui::CrashReporter ui;
-
-    QString m_minidump;
-    QNetworkRequest* m_request;
-    QNetworkReply* m_reply;
-    QUrl m_url;
+    Config m_config;
+    QSharedPointer<QNetworkRequest> m_request;
+    QSharedPointer<QNetworkReply> m_reply;
 
     QString getPlatformInformation();
 
