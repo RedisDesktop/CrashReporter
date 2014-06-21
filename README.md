@@ -1,5 +1,12 @@
-## Qt Crash Reporter
+## Crash Reporter
 
+![](http://glide.name/wp-content/uploads/2014/06/crashReporter.jpg)
+
+### Usage
+
+```
+crashreporter dumpFileName [crashedApplicationPath]
+```
 
 
 
