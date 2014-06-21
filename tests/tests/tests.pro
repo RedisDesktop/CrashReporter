@@ -15,9 +15,7 @@ TEMPLATE = app
 SOURCES += tst_crashreportertest.cpp \
     $$PWD/../../src/CrashReporter.cpp
 
-HEADERS +=  $$PWD/../../src/*.h
-
-FORMS += $$PWD/../../ui/*.ui
+HEADERS +=  $$PWD/../../src/CrashReporter.h
 
 INCLUDEPATH += $$PWD/../../src/
 
