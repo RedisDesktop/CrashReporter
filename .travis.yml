@@ -22,7 +22,7 @@ script:
   - cd ./tests/webserver_stub/
   - chmod +x ./run.sh 
   - nohup sh `pwd`/run.sh &
-  - wget  http://127.0.0.1:8080/ --quiet -O -
+  - curl http://127.0.0.1:8080/
   - cd ./../tests/
   - qmake
   - make -s
