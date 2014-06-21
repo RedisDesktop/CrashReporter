@@ -1,0 +1,37 @@
+language: cpp
+compiler:
+  - gcc
+before_install:
+- sudo add-apt-repository --yes ppa:beineri/opt-qt53
+- sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+- sudo apt-get update -qq
+- sudo apt-get install qt53base qt53imageformats qt53tools qt53xmlpatterns -y -qq
+- uname -m
+- export QTDIR=/opt/qt53
+- export PATH=$QTDIR/bin:$PATH
+- export LD_LIBRARY_PATH=$QTDIR/lib/:$QTDIR/lib/`uname -m`-linux-gnu:$LD_LIBRARY_PATH
+- sudo apt-get install libssl1.0.0 -y -qq
+- sudo apt-get install gcc-4.7 g++-4.7 gdb -y -qq
+- sudo rm -f /usr/bin/gcc
+- sudo rm -f /usr/bin/g++
+- sudo rm -f /usr/bin/gcov
+- sudo ln -s /usr/bin/gcc-4.7 /usr/bin/gcc
+- sudo ln -s /usr/bin/g++-4.7 /usr/bin/g++
+- sudo ln -s /usr/bin/gcov-4.7 /usr/bin/gcov
+script:
+  - qmake -v
+  - qmake
+  - make
+  - cd ./../tests/webserver_stub/
+  - php -v
+  - nohup ./run.sh &
+  - cd ./../tests/
+  - qmake
+  - make -s
+  - ./../bin/tests -platform minimal -txt
+notifications:
+  recipients:
+    - u.glide@gmail.com
+  email:
+    on_success: change
+    on_failure: change
