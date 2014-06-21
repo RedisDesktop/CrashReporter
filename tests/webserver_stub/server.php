@@ -100,16 +100,16 @@ HTML;
 
 // --------------------------------------------------
 
-$REQUEST_DIR = realpath(__DIR__ . '/requests');
+$requestDir = realpath(__DIR__ . '/requests');
 
 $router = array(
-    "/\/crash-report*/i"  => function () use ($REQUEST_DIR) {
+    "/\/crash-report*/i"  => function () use ($requestDir) {
 
         if (empty($_FILES['upload_file_minidump']))
             return '';
 
 
-        $dumpName = $REQUEST_DIR . '/' . "last.dmp";
+        $dumpName = $requestDir . '/' . "last.dmp";
 
         if (move_uploaded_file($_FILES['upload_file_minidump']['tmp_name'], $dumpName)) {
             echo '{"ok":"OK! Thanks!"}';
@@ -120,7 +120,7 @@ $router = array(
     }
 );
 
-$server = new Server($REQUEST_DIR, array(), $router);
+$server = new Server($requestDir, array(), $router);
 
 if ($server->canProcessRequest()) {
     $server->processRequest();
