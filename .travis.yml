@@ -25,7 +25,8 @@ script:
   - cd ./../tests/
   - qmake
   - make -s
-  - ./../bin/tests -platform minimal -txt
+  - cd ./../bin/
+  - ./tests -platform minimal -txt
 notifications:
   recipients:
     - u.glide@gmail.com
