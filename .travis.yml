@@ -27,9 +27,3 @@ script:
   - make -s
   - cd ./../bin/
   - ./tests -platform minimal -txt
-notifications:
-  recipients:
-    - u.glide@gmail.com
-  email:
-    on_success: change
-    on_failure: change
