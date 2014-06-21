@@ -1,6 +1,6 @@
-language: cpp
-compiler:
-  - gcc
+language: php
+php:
+  - "5.4" 
 before_install:
 - sudo add-apt-repository --yes ppa:beineri/opt-qt53
 - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
@@ -20,9 +20,7 @@ before_install:
 - sudo ln -s /usr/bin/gcov-4.7 /usr/bin/gcov
 script:
   - qmake -v
-  - mkdir ./obj
-  - chmod +x ./obj
-  - qmake
+  - qmake DESTDIR=./bin/
   - make
   - cd ./tests/webserver_stub/
   - php -v
