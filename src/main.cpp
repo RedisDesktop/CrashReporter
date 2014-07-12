@@ -5,6 +5,7 @@
 #include <iostream>
 #include "CrashReporter.h"
 #include "appwindow.h"
+#include "version.h"
 #include <QApplication>
 #include <QMessageBox>
 #include <QUrl>
@@ -33,7 +34,7 @@ int main( int argc, char* argv[] )
     Config crashReporterConfig = {
         "RedisDesktopManager",
         "http://redisdesktop.com/crash-report",
-        QByteArray(RDM_VERSION),
+        QString(RDM_VERSION),
         QString(argv[1])
     };
 
