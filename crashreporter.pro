@@ -17,6 +17,7 @@ SOURCES += \
 
 HEADERS  += \
     $$PWD/src/*.h \
+    src/version.h
 
 FORMS += \
     $$PWD/ui/*.ui \
@@ -35,5 +36,3 @@ unix:!macx {
     CONFIG += static
     QMAKE_LFLAGS += -static-libgcc -static-libstdc++
 }
-
-DEFINES += RDM_VERSION="\\\"0.0.0\\\""
