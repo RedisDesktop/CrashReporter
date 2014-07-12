@@ -35,7 +35,8 @@ void AppWindow::onProgress( qint64 done, qint64 total )
 
 void AppWindow::onAppRestart()
 {
-    QProcess::startDetached(QApplication::instance()->arguments().at(2));
+    QStringList args;
+    QProcess::startDetached(QApplication::instance()->arguments().at(2), args);
     QApplication::instance()->quit();
 }
 
