@@ -128,7 +128,7 @@ CrashReporter::onDone()
         return;
 
     } else if (jsonResponse.contains("error")) {
-        emit error("Error occurred", jsonResponse.value("ok").toString());
+        emit error("Error occurred", jsonResponse.value("error").toString());
     }
 }
 
