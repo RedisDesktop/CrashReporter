@@ -40,3 +40,5 @@ If minidump was accepted:
 
 ###Server implementation example
 https://github.com/RedisDesktop/redisdesktop.com/blob/master/app/controllers/crash-report.php
+
+######Based on https://github.com/dschmidt/libcrashreporter-qt/
