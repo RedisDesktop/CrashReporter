@@ -22,10 +22,10 @@ HEADERS  += \
 FORMS += \
     $$PWD/ui/*.ui \
 
-OBJECTS_DIR = $$DESTDIR/obj
-MOC_DIR = $$DESTDIR/obj
-RCC_DIR = $$DESTDIR/obj
-UI_DIR = $$DESTDIR/obj
+OBJECTS_DIR = $$DESTDIR/.crash_reporter_build
+MOC_DIR = $$DESTDIR/.crash_reporter_build
+RCC_DIR = $$DESTDIR/.crash_reporter_build
+UI_DIR = $$DESTDIR/.crash_reporter_build
 
 win32 {
     LIBS += -lws2_32 -lkernel32 -luser32 -lshell32 -luuid -lole32 -ladvapi32
