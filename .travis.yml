@@ -11,7 +11,7 @@ before_install:
 - export QTDIR=/opt/qt54
 - export PATH=$QTDIR/bin:$PATH
 - export LD_LIBRARY_PATH=$QTDIR/lib/:$QTDIR/lib/`uname -m`-linux-gnu:$LD_LIBRARY_PATH
-- sudo apt-get install gcc-4.9 g++-4.7 -y -qq
+- sudo apt-get install gcc-4.9 g++-4.9 -y -qq
 - sudo rm -f /usr/bin/gcc
 - sudo rm -f /usr/bin/g++
 - sudo ln -s /usr/bin/gcc-4.9 /usr/bin/gcc
