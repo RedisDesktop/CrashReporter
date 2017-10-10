@@ -38,4 +38,4 @@ If minidump was accepted:
 {"ok" : "Thank you!"}
 ```
 
-######Based on https://github.com/dschmidt/libcrashreporter-qt/
+**Based on https://github.com/dschmidt/libcrashreporter-qt/**
