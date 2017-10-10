@@ -16,7 +16,7 @@ Send Crash Report
 POST /crash-report
 ```
 
-#####Parameters
+##### Parameters
 | Name | Type | Description |
 |-------- |-------|---------------|
 | product  | String | Crashed application name (`RedisDesktopManager`) |
@@ -24,7 +24,7 @@ POST /crash-report
 | platform  | String | OS name (Windows, Linux or OSX) |
 | upload\_file\_minidump  | File | Google Breakpad minidump |
 
-#####Response
+##### Response
 
 If error occurred:
 
@@ -37,8 +37,5 @@ If minidump was accepted:
 ```
 {"ok" : "Thank you!"}
 ```
-
-###Server implementation example
-https://github.com/RedisDesktop/redisdesktop.com/blob/master/app/controllers/crash-report.php
 
 ######Based on https://github.com/dschmidt/libcrashreporter-qt/
