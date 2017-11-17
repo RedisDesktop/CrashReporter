@@ -5,7 +5,6 @@
 #include <iostream>
 #include "CrashReporter.h"
 #include "appwindow.h"
-#include "version.h"
 #include <QApplication>
 #include <QMessageBox>
 #include <QUrl>
