@@ -1,4 +1,4 @@
-## Crash Reporter [![Build Status](https://travis-ci.org/RedisDesktop/CrashReporter.png?branch=master)](https://travis-ci.org/RedisDesktop/CrashReporter) [![Backlog](https://badge.waffle.io/RedisDesktop/CrashReporter.png)](https://waffle.io/redisdesktop/crashreporter)
+## Crash Reporter [![Build Status](https://travis-ci.org/RedisDesktop/CrashReporter.png?branch=master)](https://travis-ci.org/RedisDesktop/CrashReporter)
 
 ![](http://glide.name/wp-content/uploads/2014/06/crashReporter.jpg)
 
