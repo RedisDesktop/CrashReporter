@@ -16,8 +16,7 @@ SOURCES += \
     $$PWD/src/*.cpp \
 
 HEADERS  += \
-    $$PWD/src/*.h \
-    src/version.h
+    $$PWD/src/*.h
 
 FORMS += \
     $$PWD/ui/*.ui \
