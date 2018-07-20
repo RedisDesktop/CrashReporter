@@ -10,7 +10,7 @@ crashreporter dumpFileName [crashedApplicationPath]
 
 
 
-### Supported API
+### Supported API (Compatible with [OopsyPad](https://github.com/RedisDesktop/OopsyPad))
 Send Crash Report
 ```
 POST /crash-report
