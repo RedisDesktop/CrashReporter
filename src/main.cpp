@@ -20,12 +20,14 @@ int main( int argc, char* argv[] )
         QMessageBox msgBox;
         msgBox.setWindowTitle("Crash Reporter");
         msgBox.setText(
-                    "<b>Usage:</b> <br />"
+            QString("<b>Usage:</b> <br />"
                     " crashReporter <i>minidumpPath</i> [<i>crashedApplicationPath</i>]\n"
                     "<br /> <br /> <b>Example:</b> <br />"
                     " crashReporter 0120EDSDSD3.dmp [/usr/share/appFolder/app]\n"
                     "<br /><br /> <b> More info </b>: <a href='https://github.com/RedisDesktop/CrashReporter'>https://github.com/RedisDesktop/CrashReporter</a>"
-                    );
+                    "<br/><br/> Config:<br/> APP_NAME=%1;<br/> APP_VERSION=%2;<br/> CRASH_SERVER_URL=%3<br/>"
+                   ).arg(QString(APP_NAME)).arg(QString(APP_VERSION)).arg(QString(CRASH_SERVER_URL))
+        );
         msgBox.exec();
         return 1;
     }
