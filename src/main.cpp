@@ -13,9 +13,9 @@
 
 int main( int argc, char* argv[] )
 {
-    QApplication app( argc, argv );
+    QApplication app( argc, argv );    
 
-    if (argc < 2 || !QFile::exists(QString(argv[1])) )
+    if (argc < 2 || !QFile::exists(app.arguments()[1]))
     {
         QMessageBox msgBox;
         msgBox.setWindowTitle("Crash Reporter");
@@ -26,7 +26,11 @@ int main( int argc, char* argv[] )
                     " crashReporter 0120EDSDSD3.dmp [/usr/share/appFolder/app]\n"
                     "<br /><br /> <b> More info </b>: <a href='https://github.com/RedisDesktop/CrashReporter'>https://github.com/RedisDesktop/CrashReporter</a>"
                     "<br/><br/> Config:<br/> APP_NAME=%1;<br/> APP_VERSION=%2;<br/> CRASH_SERVER_URL=%3<br/>"
-                   ).arg(QString(APP_NAME)).arg(QString(APP_VERSION)).arg(QString(CRASH_SERVER_URL))
+                    "<br /><br /> ARGUMENTS: <br /> %4"
+                   ).arg(QString(APP_NAME))
+                    .arg(QString(APP_VERSION))
+                    .arg(QString(CRASH_SERVER_URL))
+                    .arg(app.arguments().join("<br />"))
         );
         msgBox.exec();
         return 1;
@@ -36,7 +40,7 @@ int main( int argc, char* argv[] )
         QString(APP_NAME),
         QString(CRASH_SERVER_URL),
         QString(APP_VERSION),
-        QString(argv[1])
+        QString(app.arguments()[1])
     };
 
     QApplication::setApplicationName(QString("%1 Crash Reporter").arg(crashReporterConfig.productName));
