@@ -69,7 +69,7 @@
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;
 &lt;div style=&quot;font-size: 25px; margin-bottom: 15px; &quot;&gt;:'( &lt;span style=&quot; font-weight:600; font-size: 15px;&quot;&gt;Sorry! Redis Desktop Manager crashed.&lt;/span&gt; &lt;/div&gt;
-&lt;div&gt; Now Redis Desktop Manager is sending crash report directly to developers. This report will help us to improve the stability in the feature.&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;https://oops.redisdesktop.com/help&quot;&gt;Help&lt;/a&gt;
+&lt;div&gt; Now Redis Desktop Manager is sending crash report directly to developers. This report will help us to improve the stability in the feature.&lt;/div&gt;&lt;br&gt;&lt;br&gt;&lt;a href=&quot;https://oops.redisdesktop.com/help&quot;&gt;What information is sent?&lt;/a&gt;
 &lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="textFormat">
